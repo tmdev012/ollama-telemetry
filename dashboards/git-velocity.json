@@ -1,0 +1,125 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "git-velocity",
+    "title": "Git Commit Velocity & Issue Burndown",
+    "tags": [
+      "git",
+      "velocity",
+      "issues"
+    ],
+    "timezone": "browser",
+    "refresh": "5m",
+    "time": {
+      "from": "now-30d",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Daily Commits",
+        "type": "barchart",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "increase(git_commits_total[1d])",
+            "legendFormat": "{{repo}}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Issue Burndown",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "github_open_issues",
+            "legendFormat": "{{repo}} open",
+            "refId": "A"
+          },
+          {
+            "expr": "github_closed_issues",
+            "legendFormat": "{{repo}} closed",
+            "refId": "B"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Lines Changed (Additions/Deletions)",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "git_lines_added_total",
+            "legendFormat": "additions",
+            "refId": "A"
+          },
+          {
+            "expr": "git_lines_deleted_total",
+            "legendFormat": "deletions",
+            "refId": "B"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "PR Merge Time",
+        "type": "histogram",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "github_pr_merge_seconds",
+            "legendFormat": "{{repo}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Active Contributors",
+        "type": "stat",
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "targets": [
+          {
+            "expr": "count(git_contributor_commits_total > 0)",
+            "legendFormat": "contributors",
+            "refId": "A"
+          }
+        ]
+      }
+    ]
+  }
+}

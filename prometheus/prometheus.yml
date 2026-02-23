@@ -1,0 +1,31 @@
+# Prometheus Configuration for Ollama Telemetry
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+scrape_configs:
+  # Node Exporter - System metrics (CPU, RAM, Disk)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          instance: 'ollama-telemetry-host'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Ollama metrics (if exposed)
+  - job_name: 'ollama'
+    static_configs:
+      - targets: ['host.docker.internal:11434']
+    metrics_path: /metrics
+    scrape_interval: 30s
+
+  # Docker container metrics via cAdvisor (optional)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 30s
